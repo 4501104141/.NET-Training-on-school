@@ -1,23 +1,28 @@
 ﻿using LAP01.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LAP01.Controllers
 {
     public class ProductController : Controller
     {
-        public IActionResult Index()
+        static List<Product> products = new List<Product>();
+        public IActionResult ShowAll()
+        {
+            return View("ShowAll", products);
+        }
+
+        public IActionResult Create()
         {
             return View();
         }
-        public IActionResult ShowAll()
+        public IActionResult Create3([Bind("ID", "Name", "Price")] Product product)
         {
-            ViewData["Heading"] = "All Products";
-            var products = new List<Product>();
-            products.Add(new Product { ID = 101, Name = "IPad 2018", Price = 499 });
-            products.Add(new Product { ID = 202, Name = "IPhone X", Price = 999 });
-            products.Add(new Product { ID = 303, Name = "SS Note 9", Price = 1099 });
-            return View(products);
+            //thêm vào danh sách
+            products.Add(product);
+            //gọi hiển thị danh sách
+            return RedirectToAction("ShowAll");
         }
     }
 }
